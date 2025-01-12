@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PerakladBot alert</title>
+
+    <style>
+        .alert{
+            background-color: #FFFFFF;
+            font-size: 40px;
+            margin: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="messageDisplay" class="alert"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("http://localhost:5000/notificationHub")
+            .build();
+
+        connection.on("ReceiveMessage", function (message) {
+            const messageDisplay = document.getElementById("messageDisplay");
+            messageDisplay.innerText = message;
+            messageDisplay.style.display = "block";
+
+            setTimeout(() => {
+                messageDisplay.style.display = "none";
+            }, 5000);
+        });
+
+        connection.start().catch(function (err) {
+            console.log(err.toString())
+        });
+    </script>
+
+</body>
+
+</html>
