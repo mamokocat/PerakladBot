@@ -1,40 +1,29 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using TwitchLib.Client;
-using TwitchLib.Client.Events;
+﻿using TwitchLib.Client;
 using TwitchLib.Client.Models;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using PerakladBot.Constants;
+
+var options = new ChromeOptions();
+options.AddArgument("--no-sandbox");
+options.AddArgument("--disable-dev-shm-usage");
+options.AddArgument("--remote-allow-origins=*");
+options.AddArgument("--headless");
+
+using IWebDriver driver = new ChromeDriver(options);
+
+driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(120); 
+driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(120); 
+
+driver.Navigate().GoToUrl("https://www.skarnik.by/");
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSignalR();
-
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
-if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddUserSecrets<Program>();
-}
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(MyAllowSpecificOrigins, policy =>
-    {
-        //policy.WithOrigins(builder.Configuration["AlertPageUrl"] ?? string.Empty)
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
-    });
-});
-
-
+builder.Configuration.AddUserSecrets<Program>();
 
 var app = builder.Build();
 
-app.UseCors(MyAllowSpecificOrigins);
-
-app.MapHub<NotificationHub>("/notificationHub");
-
-void StartTwitchChatMonitoring(IHubContext<NotificationHub> hubContext)
+void StartTwitchChatMonitoring()
 {
     var credentials = new ConnectionCredentials(builder.Configuration["TwitchClientUsername"], builder.Configuration["TwitchClientToken"]);
     var client = new TwitchClient();
@@ -42,22 +31,27 @@ void StartTwitchChatMonitoring(IHubContext<NotificationHub> hubContext)
 
     client.OnMessageReceived += (sender, e) =>
     {
-        var message = $"{e.ChatMessage.DisplayName}: {e.ChatMessage.Message}";
-        _ = hubContext.Clients.All.SendAsync("ReceiveMessage", message);
+        var message = e.ChatMessage.Message.Split(' ');
+
+        if (message.Length < 2 || !message[0].StartsWith('!'))
+        {
+            return;
+        }
+
+        switch (message[0].Substring(1))
+        {
+            case CommandNames.TranslationBelRu:
+                //TranslationCommand.Translate(driver, client, e.ChatMessage, message[1], TranslationTypes.RusBel);
+                client.SendMessage(client.JoinedChannels.First(), "lmao");
+                break;
+
+        }
     };
 
     client.Connect();
 }
 
-StartTwitchChatMonitoring(app.Services.GetRequiredService<IHubContext<NotificationHub>>());
+StartTwitchChatMonitoring();
 
 app.Run();
-
-public class NotificationHub : Hub
-{
-    public async Task SendMessage(string message)
-    {
-        await Clients.All.SendAsync("ReceiveMessage", message);
-    }
-}
 
