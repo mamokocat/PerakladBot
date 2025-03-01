@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.5.002.0
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerakladBot", "PerakladBot.csproj", "{F01674F6-AFC0-4437-BFD9-D1DD49DC19B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerakladBot", "PerakladBot\PerakladBot.csproj", "{17220A49-DF01-4FBB-8740-A58CEF0B4998}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F01674F6-AFC0-4437-BFD9-D1DD49DC19B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F01674F6-AFC0-4437-BFD9-D1DD49DC19B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F01674F6-AFC0-4437-BFD9-D1DD49DC19B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F01674F6-AFC0-4437-BFD9-D1DD49DC19B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17220A49-DF01-4FBB-8740-A58CEF0B4998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17220A49-DF01-4FBB-8740-A58CEF0B4998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17220A49-DF01-4FBB-8740-A58CEF0B4998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17220A49-DF01-4FBB-8740-A58CEF0B4998}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BA36A06F-C0FE-4E5A-8619-D22A9033964E}
 	EndGlobalSection
 EndGlobal
